@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sentiment Analysis Chatbot</title>
+    <style>
+        body {
+            background-color: turquoise;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: pink;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        h1 {
+            color: black;
+            text-align: center;
+        }
+
+        .chatbox {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: black;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid black;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 10px;
+            background-color: turquoise;
+            color: black;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        .submit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .chat-history {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: pink;
+            border-radius: 4px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .chat-history div {
+            margin-bottom: 10px;
+        }
+
+        .chat-history .user {
+            color: #007bff;
+        }
+
+        .chat-history .chatbot {
+            color: #28a745;
+        }
+
+        .chat-history .ratios {
+            font-size: 0.9em;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sentiment Analysis Chatbot</h1>
+        <div class="chatbox">
+            <form method="POST" action="/">
+                {{ form.hidden_tag() }}
+                <div class="form-group">
+                    <label for="user_input">{{ form.user_input.label }}</label>
+                    {{ form.user_input(class="text-input") }}
+                </div>
+                <div class="form-group">
+                    {{ form.submit(class="submit-btn") }}
+                </div>
+            </form>
+        </div>
+        <div class="chat-history">
+            {% for sender, message, sentiment in chat_history %}
+                <div class="{{ 'user' if sender == 'User' else 'chatbot' }}">
+                    <strong>{{ sender }}:</strong> {{ message }}
+                    {% if sender == 'Chatbot' %}
+                        <div class="ratios">
+                            Positive: {{ sentiment['pos'] }}, Neutral: {{ sentiment['neu'] }}, Negative: {{ sentiment['neg'] }}, Compound: {{ sentiment['compound'] }}
+                        </div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
